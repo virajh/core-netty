@@ -107,6 +107,9 @@ public class Server {
 
 		// communication - external (TCP) using asynchronous communication
 		cf = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
+		
+		//viraj: a factory for Serverside sockets. Read link below.
+		//http://docs.jboss.org/netty/3.2/api/org/jboss/netty/channel/socket/nio/NioServerSocketChannelFactory.html
 
 		// communication - internal (UDP)
 		// mgmtCF = new
@@ -207,12 +210,17 @@ public class Server {
 		// storage initialization
 		// TODO storage setup (e.g., connection to a database)
 
+		//viraj: studied postgresql installation
+
 		// start communication
 		createPublicBoot(port);
 		createManagementBoot(mport);
 
 		// start management
 		ManagementQueue.startup();
+
+
+		//viraj: starts the management queue which in turn starts managment workers for handling heartbeats and nodejoins.
 
 		// establish nearest nodes and start receiving heartbeats
 		str = conf.getServer().getProperty("node.id");
